@@ -1,0 +1,25 @@
+{
+  "name": "finBERT",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--name", "finbert-nlp"],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "python.terminal.activateEnvironment": false
+      }
+    }
+  },
+  "remoteUser": "root"
+}

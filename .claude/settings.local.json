@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat /etc/os-release 2>/dev/null || uname -a)",
+      "Read(//usr/lib/**)",
+      "Bash(apt-get update *)",
+      "Bash(apt-get install *)"
+    ]
+  }
+}
