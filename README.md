@@ -1,18 +1,119 @@
 # FinBERT: Financial Sentiment Analysis with BERT
 
-FinBERT sentiment analysis model is now available on Hugging Face model hub. You can get the model [here](https://huggingface.co/ProsusAI/finbert). 
-
 FinBERT is a pre-trained NLP model to analyze sentiment of financial text. It is built by further training
  the [BERT](https://arxiv.org/pdf/1810.04805.pdf) language model in the finance domain, using a large financial corpus and thereby fine-tuning
   it for financial sentiment classification. For the details, please see 
   [FinBERT: Financial Sentiment Analysis with Pre-trained Language Models](https://arxiv.org/pdf/1908.10063.pdf).
 
-**Important Note:** 
-FinBERT implementation relies on Hugging Face's `pytorch_pretrained_bert` library and their implementation of BERT for sequence classification tasks. `pytorch_pretrained_bert` is an earlier version of the [`transformers`](https://github.com/huggingface/transformers) library. It is on the top of our priority to migrate the code for FinBERT to `transformers` in the near future.
+The model is available on Hugging Face: [ProsusAI/finbert](https://huggingface.co/ProsusAI/finbert).
 
-## Installing
- Install the dependencies by creating the Conda environment `finbert` from the given `environment.yml` file and
- activating it.
+---
+
+## Sentiment Pipeline (local LLM via LM Studio)
+
+A one-command pipeline that fetches financial news for a configurable stock universe and runs sentiment analysis through a local LLM served by [LM Studio](https://lmstudio.ai).
+
+### Prerequisites
+
+- Python 3.8+
+- LM Studio installed and running with a model loaded on port `1234`
+- A free [Finnhub](https://finnhub.io/register) API key
+
+### Setup
+
+**1. Install pipeline dependencies**
+```bash
+pip install -r requirements-pipeline.txt
+```
+
+**2. Configure environment**
+```bash
+cp .env.example .env
+```
+Then open `.env` and fill in your Finnhub API key:
+```
+FINNHUB_API_KEY=your_key_here
+```
+All other values have sensible defaults and can be left as-is unless you need to change them.
+
+**3. Edit your stock universe**
+
+Open `stocks.yaml` and add or remove tickers:
+```yaml
+stocks:
+  - ticker: AAPL
+    name: Apple
+  - ticker: MSFT
+    name: Microsoft
+  - ticker: TSLA
+    name: Tesla
+
+settings:
+  days_lookback: 7
+```
+
+### Running
+
+```bash
+# Run with stocks.yaml defaults
+python run_sentiment.py
+
+# Override the lookback window
+python run_sentiment.py --days 14
+
+# Analyse specific tickers (bypasses stocks.yaml)
+python run_sentiment.py --tickers NVDA AMD GOOGL
+
+# Use a different config file
+python run_sentiment.py --config my_portfolio.yaml
+```
+
+### Output
+
+Results are saved to `output/YYYY-MM-DD/sentiment_HHMMSS.csv` with the following columns:
+
+| Column | Description |
+|---|---|
+| `run_ts` | UTC timestamp of the pipeline run |
+| `ticker` | Stock symbol |
+| `news_id` | Finnhub article ID |
+| `news_date` | Article publication date |
+| `source` | News source |
+| `headline` | Article headline |
+| `sentiment` | `Positive`, `Negative`, or `Neutral` |
+| `confidence_score` | Model confidence (0–1) |
+
+A summary table is also printed to the console at the end of each run.
+
+### Time-series DB push (coming soon)
+
+When your DB endpoint is ready, add it to `.env`:
+```
+DB_ENDPOINT=http://your-server/api/sentiment
+```
+Or pass it on the command line:
+```bash
+python run_sentiment.py --push-db http://your-server/api/sentiment
+```
+
+### Environment variables (`.env`)
+
+| Variable | Default | Description |
+|---|---|---|
+| `FINNHUB_API_KEY` | — | **Required.** Your Finnhub API key |
+| `FINNHUB_BASE_URL` | `https://finnhub.io/api/v1` | Finnhub base URL |
+| `LM_STUDIO_URL` | `http://127.0.0.1:1234/v1` | LM Studio local server URL |
+| `LM_STUDIO_MODEL` | `qwen` | Model name hint passed to LM Studio |
+| `OUTPUT_DIR` | `output` | Root folder for CSV results |
+| `DB_ENDPOINT` | — | Optional. Time-series DB push endpoint |
+
+---
+
+## Original FinBERT
+
+### Installing
+Install the dependencies by creating the Conda environment `finbert` from the given `environment.yml` file and
+activating it.
 ```bash
 conda env create -f environment.yml
 conda activate finbert
