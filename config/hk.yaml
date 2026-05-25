@@ -1,0 +1,14 @@
+stocks:
+  - ticker: "00285.HK"
+    name: BYD Electronic
+  - ticker: "09988.HK"
+    name: Alibaba HK
+  - ticker: "01810.HK"
+    name: Xiaomi HK
+  # - ticker: "00700.HK"
+  #   name: Tencent
+  # - ticker: "00005.HK"
+  #   name: HSBC
+
+settings:
+  days_lookback: 1

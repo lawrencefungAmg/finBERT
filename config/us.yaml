@@ -1,0 +1,43 @@
+stocks:
+  # --- Index ETFs ---
+  - ticker: SPY
+    name: SPDR S&P 500 ETF
+  - ticker: QQQ
+    name: Invesco Nasdaq-100 ETF
+
+  # --- Tech / Large Cap ---
+  - ticker: UNH
+    name: UnitedHealth Group
+  - ticker: NVDA
+    name: Nvidia
+  - ticker: TSLA
+    name: Tesla
+  - ticker: GOOGL
+    name: Alphabet
+  - ticker: AAPL
+    name: Apple
+  # - ticker: MSFT
+  #   name: Microsoft
+
+  # --- Nuclear & Energy ---
+  - ticker: CEG
+    name: Constellation Energy
+  - ticker: VST
+    name: Vistra Energy
+  - ticker: CCJ
+    name: Cameco (uranium)
+  - ticker: NNE
+    name: Nano Nuclear Energy
+  - ticker: OKLO
+    name: Oklo (small modular reactors)
+  - ticker: SMR
+    name: NuScale Power
+  # - ticker: LEU
+  #   name: Centrus Energy
+  # - ticker: URA
+  #   name: Global X Uranium ETF
+  # - ticker: NLR
+  #   name: VanEck Uranium+Nuclear ETF
+
+settings:
+  days_lookback: 7

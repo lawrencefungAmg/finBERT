@@ -4,7 +4,9 @@
       "Bash(cat /etc/os-release 2>/dev/null || uname -a)",
       "Read(//usr/lib/**)",
       "Bash(apt-get update *)",
-      "Bash(apt-get install *)"
+      "Bash(apt-get install *)",
+      "Bash(mkdir -p /Users/fcw/Desktop/qs/finBERT/config)",
+      "Bash(git -C /Users/fcw/Desktop/qs/finBERT mv stocks.yaml config/stocks.yaml)"
     ]
   }
 }
